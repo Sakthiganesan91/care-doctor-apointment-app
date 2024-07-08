@@ -9,10 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import "react-phone-number-input/style.css";
 
+const PhoneInput = require("react-phone-number-input");
 import { Control } from "react-hook-form";
 import { FormFieldTypes } from "./forms/PatientForm";
 import Image from "next/image";
+import { E164Number } from "libphonenumber-js";
 interface CustomProps {
   control: Control<any>;
   fieldType: FormFieldTypes;
@@ -51,6 +54,21 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               className="shad-input border-0"
             />
           </FormControl>
+        </div>
+      );
+
+    case FormFieldTypes.PHONE_INPUT:
+      return (
+        <div>
+          <PhoneInput
+            defaultCountry="IN"
+            placeholder={placeholder}
+            international
+            withCountryCallingCode
+            value={field.value as E164Number | undefined}
+            onChange={field.onChange}
+            className="input-phone"
+          />
         </div>
       );
 

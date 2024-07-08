@@ -48,6 +48,24 @@ function PatientForm() {
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
         />
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldTypes.INPUT}
+          name="email"
+          label="Email"
+          placeholder="example@xyz.com"
+          iconSrc="/assets/icons/email.svg"
+          iconAlt="email"
+        />
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldTypes.PHONE_INPUT}
+          name="phone"
+          label="Phone Number"
+          placeholder="6541100099"
+          iconSrc="/assets/icons/email.svg"
+          iconAlt="email"
+        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
