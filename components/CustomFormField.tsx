@@ -55,7 +55,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       );
 
     default:
-      break;
+      return null;
   }
 };
 
