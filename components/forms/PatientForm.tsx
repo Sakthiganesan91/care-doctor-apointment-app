@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
+import { patientFormSchema } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 
 export enum FormFieldTypes {
   INPUT = "input",
@@ -18,21 +20,36 @@ export enum FormFieldTypes {
   SKELETON = "skeleton",
 }
 
-const formSchema = z.object({
-  username: z.string().min(2).max(50),
-});
-
 function PatientForm() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+
+  const form = useForm<z.infer<typeof patientFormSchema>>({
+    resolver: zodResolver(patientFormSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof patientFormSchema>) {
+    setIsLoading(true);
+    const userData = {
+      ...values,
+    };
+    console.log(userData);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    // const user = createUser(userData)
+
+    // if (user) router.push(`patients/${user.$id}/register`)
+    try {
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <Form {...form}>
