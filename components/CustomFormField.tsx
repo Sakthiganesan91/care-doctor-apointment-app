@@ -13,9 +13,19 @@ import "react-phone-number-input/style.css";
 
 const PhoneInput = require("react-phone-number-input");
 import { Control } from "react-hook-form";
-import { FormFieldTypes } from "./forms/PatientForm";
+
 import Image from "next/image";
 import { E164Number } from "libphonenumber-js";
+
+export enum FormFieldTypes {
+  INPUT = "input",
+  TEXTAREA = "textarea",
+  PHONE_INPUT = "phoneInput",
+  CHECKBOX = "checkbox",
+  DATE_PICKER = "datePicker",
+  SELECT = "select",
+  SKELETON = "skeleton",
+}
 interface CustomProps {
   control: Control<any>;
   fieldType: FormFieldTypes;
