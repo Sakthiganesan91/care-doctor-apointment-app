@@ -11,6 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import "react-phone-number-input/style.css";
 
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 const PhoneInput = require("react-phone-number-input");
 import { Control } from "react-hook-form";
 
@@ -82,6 +86,24 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         </div>
       );
 
+    case FormFieldTypes.DATE_PICKER:
+      return (
+        <div className="flex rounded-md border border-dark-500 bg-dark-400 ">
+          <Image
+            src="/assets/icons/calendar.svg"
+            alt="calendar"
+            height={24}
+            width={24}
+            className="ml-12"
+          />
+          <FormControl>
+            <DatePicker
+              selected={field.value}
+              onChange={(date) => field.onChange(date)}
+            />
+          </FormControl>
+        </div>
+      );
     default:
       return null;
   }
