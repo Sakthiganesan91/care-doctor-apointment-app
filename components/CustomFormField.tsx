@@ -21,6 +21,8 @@ import { Control } from "react-hook-form";
 import Image from "next/image";
 import { E164Number } from "libphonenumber-js";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Textarea } from "./ui/textarea";
+import { Checkbox } from "./ui/checkbox";
 
 export enum FormFieldTypes {
   INPUT = "input",
@@ -134,6 +136,33 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               {props.children}
             </SelectContent>
           </Select>
+        </FormControl>
+      );
+
+    case FormFieldTypes.TEXTAREA:
+      return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            className="shad-textArea"
+            disabled={props.disabled}
+          />
+        </FormControl>
+      );
+    case FormFieldTypes.CHECKBOX:
+      return (
+        <FormControl>
+          <div className="flex items-center gap-4">
+            <Checkbox
+              id={name}
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+            <label htmlFor={name} className="checkbox-label">
+              {label}
+            </label>
+          </div>
         </FormControl>
       );
     default:
