@@ -20,6 +20,7 @@ import { Control } from "react-hook-form";
 
 import Image from "next/image";
 import { E164Number } from "libphonenumber-js";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 export enum FormFieldTypes {
   INPUT = "input",
@@ -46,8 +47,18 @@ interface CustomProps {
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-  const { control, fieldType, name, label, placeholder, iconSrc, iconAlt } =
-    props;
+  const {
+    control,
+    fieldType,
+    name,
+    label,
+    placeholder,
+    iconSrc,
+    iconAlt,
+    showTimeSelect,
+    dateformat,
+    renderSkeleton,
+  } = props;
   switch (fieldType) {
     case FormFieldTypes.INPUT:
       return (
@@ -94,15 +105,36 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             alt="calendar"
             height={24}
             width={24}
-            className="ml-12"
+            className="ml-2"
           />
           <FormControl>
             <DatePicker
               selected={field.value}
               onChange={(date) => field.onChange(date)}
+              dateFormat={dateformat ?? "dd/MM/yyyy"}
+              showTimeSelect={showTimeSelect ?? false}
+              timeInputLabel="Time : "
+              wrapperClassName="date-picker"
             />
           </FormControl>
         </div>
+      );
+    case FormFieldTypes.SKELETON:
+      return renderSkeleton ? <>{renderSkeleton(field)}</> : null;
+    case FormFieldTypes.SELECT:
+      return (
+        <FormControl>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+              <SelectTrigger className="shad-select-trigger">
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className="shad-select-content">
+              {props.children}
+            </SelectContent>
+          </Select>
+        </FormControl>
       );
     default:
       return null;
