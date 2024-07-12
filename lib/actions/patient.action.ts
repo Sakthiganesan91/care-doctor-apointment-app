@@ -1,7 +1,18 @@
+"use server";
 import { ID, Query } from "node-appwrite";
-import { users } from "../appwrite.config";
+import {
+  databases,
+  DATABASE_KEY,
+  NEXT_BUCKET_ID,
+  PATIENT_COLLECTION_ID,
+  storage,
+  users,
+  API_KEY,
+  PROJECT_ID,
+  NEXT_PUBLIC_ENDPOINT,
+} from "../appwrite.config";
 import { parseStringify } from "../utils";
-
+import { InputFile } from "node-appwrite/file";
 export const createUser = async (user: CreateUserParams) => {
   console.log("its happening");
   try {
@@ -30,5 +41,41 @@ export const getUser = async (userId: string) => {
     return parseStringify(user);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const registerPatient = async ({
+  identificationDocument,
+  ...patient
+}: RegisterUserParams) => {
+  try {
+    let file;
+    if (identificationDocument) {
+      const inputFile = InputFile.fromBuffer(
+        identificationDocument?.get("blobFile") as Blob,
+        identificationDocument.get("fileName") as string
+      );
+      file = await storage.createFile(NEXT_BUCKET_ID!, ID.unique(), inputFile);
+    }
+
+    const newPatient = await databases.createDocument(
+      "668d4a8100340c3f7ef8",
+
+      PATIENT_COLLECTION_ID!,
+
+      ID.unique(),
+      {
+        identificationDocumentId: file?.$id || null,
+        identificationDocumentUrl: `${"https://cloud.appwrite.io/v1"}/storage/buckets/${"668d4b6c003a13eeb17e"}/files/${
+          file?.$id
+        }/view??project=${"668d497b00282de1d006"}`,
+
+        ...patient,
+      }
+    );
+
+    return parseStringify(newPatient);
+  } catch (error) {
+    console.error("An error occurred while creating a new patient:", error);
   }
 };

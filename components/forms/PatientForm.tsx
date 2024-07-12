@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 
-import { patientFormSchema } from "@/lib/validation";
+import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldTypes } from "../CustomFormField";
@@ -19,8 +19,8 @@ const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof patientFormSchema>>({
-    resolver: zodResolver(patientFormSchema),
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
       email: "",
@@ -28,7 +28,7 @@ const PatientForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof patientFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
 
     try {
